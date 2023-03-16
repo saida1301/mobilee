@@ -1,0 +1,89 @@
+import { StyleSheet, View, Text } from "react-native";
+import React, { useEffect } from "react";
+import AuthHeader from "../../components/AuthHeader";
+import { Button } from "../../components/Button";
+import { Input } from "src/components/Input";
+import { useForm, Controller } from "react-hook-form";
+import style from '../../components/Input/style';
+import { useDispatch, useSelector } from "react-redux";
+import {AppDispatch, StoreType} from '../../store';
+import {loginThunk} from '../../store/thunks/authThunk';
+
+interface LoginForm {
+  email: string, 
+  password: string
+}
+
+const Login = ({ navigation }: any) => {
+
+  const dispacth = useDispatch<AppDispatch>();
+  const state = useSelector((state: StoreType) => state.authStore);
+
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<LoginForm>({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+
+  });
+  const onSubmit = (data: LoginForm) => {
+    dispacth(loginThunk(data)).then(res => {
+      reset();
+    });
+  }
+
+  useEffect(() => {
+    if (state.loading == "fullfied") {
+      navigation.navigate('confirm')
+    }
+  }, [state.loading])
+
+  return (
+    <View style={styles.container}>
+
+      <View style={styles.center}>
+      <View style={{position: 'relative', alignItems:"center", justifyContent:"center",}}>
+          <Image
+            source={require('isMobile/src/assets/images/1İŞ.az.png')}
+            style={{
+              position: 'absolute',
+              width: 300,
+              height: 100,
+              top: 100,
+              
+            }}
+          />
+        </View>
+        <View style={styles.inputView}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                labelShow
+                error={errors.email && 'This is email'}
+                autoCapitalize="none"
+                onChangeText={onChange}
+                autoFocus={true}
+                keyboardType="email-address"
+                autoComplete="email"
+                placeholder="Email"
+                value={value}
+                style={styles.inputStyle}
+                label="Your email" />
+            )}
+            name="email"
+          />
+        </View>
+        <View style={styles.buttonView}>
+          <Button loading={state.loading == "pending"} onPress={handleSubmit(onSubmit)} style={styles.buttonStyle} label="Continue" />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default Login;
