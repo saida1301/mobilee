@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignUp from "../../screens/Auth/SignUp";
 import Login from "../../screens/Auth/Login";
 import HomeScreen from "../../screens/HomeScreen";
+import SearchScreen from "../../screens/SearchScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -14,7 +15,7 @@ const Auth = () => {
             headerShown: false,
             animation: "slide_from_right"
         }}>
-        
+         <Stack.Screen name="search" component={SearchScreen} />
             <Stack.Screen name="home" component={HomeScreen} />
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={SignUp} />

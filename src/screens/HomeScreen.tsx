@@ -3,11 +3,10 @@ import React, { useEffect, useState } from 'react'
 import CarouselSlider from '../components/CaruselSlider'
 import SearchInput from '../components/Input/SearchInput'
 import AuthHeader from '../components/AuthHeader'
-
 import CategoryItem from '../components/CategoryItem'
-import NavigateTo from '../components/NavigateTo'
 import { colors } from '../assets/themes'
 import Companies from '../components/Companies'
+import Vacancies from '../components/Vacancies'
 
 
 
@@ -24,6 +23,7 @@ const HomeScreen = () => {
 <AuthHeader title={'Sirketler'} textColor={colors.black} />
 <Companies/>
 <AuthHeader title={'Yeni Vakansiyalar'} textColor={colors.black} />
+<Vacancies/>
     </ScrollView>
   )
 }
