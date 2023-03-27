@@ -2,11 +2,23 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { colors } from '../assets/themes';
 import data from '../services/data/categories.json';
+import vacancies from '../services/data/vacancies.json';
 
 
 const CategoryItem = () => {
   const [numToShow, setNumToShow] = useState(4);
   const [numToShowLess, setNumToShowLess] = useState(false);
+
+  const [vacancyCount, setVacancyCount] = useState(() => {
+    const count = {};
+    data.forEach((category) => {
+      count[category.id] = 0;
+    });
+    vacancies.forEach((vacancy: { category_id: string | number; }) => {
+      count[vacancy.category_id]++;
+    });
+    return count;
+  });
 
   const handleLoadMore = () => {
     setNumToShow(numToShow + 4);
@@ -33,18 +45,18 @@ const CategoryItem = () => {
               ]}
             >
               <Text style={{color:"black", left: 10,
-top: 18}}>234</Text>
+top: 18}}>{vacancyCount[category.id]}</Text>
             </View>
           </View>
         ))}
       </View>
      {numToShow < data.length ? (
         <TouchableOpacity style={styles.button} onPress={handleLoadMore}>
-          <Text style={styles.buttonText}>Daha More</Text>
+          <Text style={styles.buttonText}>Load More</Text>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity style={styles.button} onPress={handleLoadLess}>
-          <Text style={styles.buttonText}>Show Less</Text>
+          <Text style={styles.buttonText}>Load Less</Text>
         </TouchableOpacity>
       )}
     </ScrollView>
@@ -58,8 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    marginBottom: 16,
+    marginHorizontal: 21,
   },
   card: {
     position: 'relative',
@@ -98,6 +109,7 @@ marginTop: 20,
     backgroundColor: colors.primary,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    borderRadius: 5,
     alignSelf: 'center',
     marginTop: 10,
   },

@@ -15,7 +15,7 @@ const Auth = () => {
             headerShown: false,
             animation: "slide_from_right"
         }}>
-         <Stack.Screen name="search" component={SearchScreen} />
+    
             <Stack.Screen name="home" component={HomeScreen} />
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={SignUp} />

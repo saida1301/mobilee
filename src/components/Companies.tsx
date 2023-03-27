@@ -1,8 +1,19 @@
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import companies from '../services/data/companies.json';
 import LinearGradient from 'react-native-linear-gradient';
+import vacancies from '../services/data/vacancies.json';
 const Companies = () => {
+  const [vacancyCount, setVacancyCount] = useState(() => {
+    const count = {};
+    companies.forEach((company) => {
+      count[company.id] = 0;
+    });
+    vacancies.forEach((vacancy) => {
+      count[vacancy.company_id]++;
+    });
+    return count;
+  });
   const cardWidth = 160;
   const spacing = 8;
   const containerWidth = cardWidth + spacing * 2;
@@ -23,13 +34,13 @@ const Companies = () => {
               flex: 1,
               borderRadius: 10,
               marginHorizontal: 10,
-              paddingHorizontal: 10,
+              paddingHorizontal: 20,
             }}>
             <View key={index} style={[styles.card, {width: containerWidth}]}>
               <View style={styles.box}></View>
               <View style={styles.text}>
-                <Text style={{left: 8}}>{company.name}</Text>
-                <Text style={{justifyContent: 'flex-end'}}>234</Text>
+                <Text style={{left: 8}}>{company.name.substring(0, 12)}</Text>
+                <Text style={{justifyContent: 'flex-end'}}>{vacancyCount[company.id]}</Text>
               </View>
             </View>
           </LinearGradient>
@@ -44,8 +55,8 @@ export default Companies;
 const styles = StyleSheet.create({
   contentContainer: {
     position: 'relative',
+    marginHorizontal: 20,
 
-    justifyContent: 'space-around',
   },
   card: {
     position: 'relative',
@@ -68,7 +79,7 @@ bottom:-5,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 50,
+    columnGap: 50,
     flexWrap: 'nowrap',
   },
 });

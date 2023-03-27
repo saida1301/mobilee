@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const SearchInput = () => {
+const SearchInput = ({ onSearch }:any) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (query: React.SetStateAction<string>) => {
+    setSearchQuery(query);
+    onSearch(query);
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Search..."
+        placeholder="Search for companies"
         placeholderTextColor="#999"
+        onChangeText={handleSearch}
+        value={searchQuery}
       />
       <Icon name="search" size={20} color="#999" style={styles.icon} />
     </View>
